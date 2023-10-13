@@ -19,6 +19,15 @@ services:
     networks:
       net:
     restart: unless-stopped
+  graphile:
+    image: graphile/postgraphile:4.14.0
+    command: --connection=postgres://postgres:postgres@db:5432/postgres --schema=public --enhance-graphiql --watch
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      net:
   backend:
     build:
       context: ./
