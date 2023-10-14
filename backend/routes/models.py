@@ -11,7 +11,7 @@ class PointOfInterest(models.Model):
         return f'{self.notes}'
 
 class Route(models.Model):
-    owner = models.ForeignKey(User, db_index=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, db_index=True, on_delete=models.CASCADE, related_name="routes")
     name = models.CharField(max_length=255, blank=True, null=True)
     points = models.ManyToManyField(PointOfInterest)
 
