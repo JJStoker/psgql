@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'src',
     'routes',
     'teams'
 ]
