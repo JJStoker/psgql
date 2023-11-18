@@ -43,6 +43,14 @@ class Command(BaseCommand):
         cursor.execute(f"""
         GRANT EXECUTE ON FUNCTION current_user_id TO {role_name};
         """)
+        cursor.execute(f"""
+        CREATE OR REPLACE FUNCTION is_superuser() returns BOOLEAN as $$
+        select nullif(current_setting('jwt.claims.is_superuser', true), '')::BOOLEAN;
+        $$ language sql stable;
+        """)
+        cursor.execute(f"""
+        GRANT EXECUTE ON FUNCTION is_superuser TO {role_name};
+        """)
 
         for model in [cls for cls in Model.__subclasses__() if hasattr(cls, "user")]:
             table_name = model._meta.db_table
@@ -54,7 +62,7 @@ class Command(BaseCommand):
             CREATE POLICY {policy_name} ON {table_name}
             FOR ALL TO {role_name} 
             USING ("user_id" = current_user_id()) 
-            WITH CHECK ("user_id" = current_user_id());
+            WITH CHECK (is_superuser() or "user_id" = current_user_id());
             """
 
             # Activating RLS SQL
@@ -90,6 +98,9 @@ class Command(BaseCommand):
         cursor.execute(f"""
         GRANT EXECUTE ON FUNCTION current_team_ids TO {role_name};
         """)
+        cursor.execute(f"""
+        GRANT EXECUTE ON FUNCTION is_superuser TO {role_name};
+        """)
 
         for model in [cls for cls in Model.__subclasses__() if hasattr(cls, "team")]:
             table_name = model._meta.db_table
@@ -100,7 +111,7 @@ class Command(BaseCommand):
             GRANT ALL ON TABLE {table_name} TO {role_name};
             CREATE POLICY {policy_name} ON {table_name}
             FOR SELECT TO {role_name} 
-            USING ("team_id" = ANY(current_team_ids()));
+            USING (is_superuser() or "team_id" = ANY(current_team_ids()));
             """
 
             # Activating RLS SQL
