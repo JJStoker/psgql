@@ -15,10 +15,10 @@ class Command(BaseCommand):
     def get_claims(self, user):
         return dict(
             aud="postgraphile",
-            exp=int((datetime.now() + timedelta(hours=1)).timestamp()),
+            exp=int((datetime.now() + timedelta(hours=24)).timestamp()),
+            role="user_role",
             user_id=user.id,
             team_ids=",".join(map(str, user.teams.values_list('id', flat=True))),
-            is_superuser=user.is_staff
         )
 
     def create_jwt(self, claims: dict[str, str | list | int | bool]):

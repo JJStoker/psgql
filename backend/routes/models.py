@@ -5,7 +5,7 @@ from src.scanner import Claims, Roles, rls
 
 
 
-@rls((Claims.USER, 'owner_id'),)
+@rls((Claims.USER, 'owner_id', '"shared" = true'),)
 class PointOfInterest(models.Model):
     owner = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="pois", null=True, blank=True)
     location = PointField(srid=4326, null=True)
