@@ -29,11 +29,20 @@ services:
       - "3000:3000"
     volumes:
       - ./schema/:/tmp/schema/
-      - ./graphile/:/data/postgraphile/
     depends_on:
       - db
     networks:
       net:
+    environment:
+      - environment=dev
+    develop:
+      watch:
+        - action: sync
+          path: ./graphile
+          target: /data/app/
+          ignore:
+            - node_modules/
+        - action: rebuild
   backend:
     build:
       context: ./backend
