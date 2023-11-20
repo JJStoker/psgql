@@ -36,7 +36,7 @@ services:
       net:
   backend:
     build:
-      context: ./
+      context: ./backend
       dockerfile: Dockerfile
       # target: dev
     volumes:

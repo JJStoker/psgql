@@ -28,11 +28,11 @@ RUN apt-get update && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
-COPY ./config/requirements.txt .
+COPY ./requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY ./backend .
+COPY . .
 
 EXPOSE 8000
 
