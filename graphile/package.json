@@ -1,0 +1,13 @@
+{
+  "name": "graphile",
+  "version": "1.0.0",
+  "description": "Custom graphile server",
+  "main": "index.js",
+  "repository": "git@github.com:JJStoker/psgql.git",
+  "author": "JJStoker <jeroen229@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "postgraphile": "^4.13.0"
+  }
+}
